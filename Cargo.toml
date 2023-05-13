@@ -1,0 +1,22 @@
+[package]
+name = "spiffo"
+version = "0.1.0"
+authors = ["junkben"]
+edition = "2021"
+license = "BSD-3-Clause License"
+description = "Project Zomboid server manager"
+readme = "README.md"
+repository = "https://github.com/junkben/spiffo"
+
+[[bin]]
+name = "spiffo"
+
+[lib]
+name = "spiffo"
+
+[dependencies]
+log = "0.4.17"
+clap = { version = "4.2.7", features = ["derive", "env"]}
+derive-getters = "0.2.1"
+
+[dev-dependencies]
