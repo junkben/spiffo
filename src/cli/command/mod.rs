@@ -18,7 +18,7 @@ impl Command {
         use Command::*;
         match self {
             About => crate::messages::about(),
-            Configure(settings) => settings.,
+            Configure(_) => todo!(),
         }
     }
 }

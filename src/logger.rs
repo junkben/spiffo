@@ -25,8 +25,21 @@ fn compose_log_msg(record: &log::Record) -> String {
     // Put prefix and msg contents together
     let msg = format!("{} | {}", prefix, record.args());
 
-    // Indent long msgs with 4 spaces
-    msg.replace('\n', "\n    ")
+    // // newspace every 100 characters
+    // let msg = raw.chars()
+    //     .enumerate()
+    //     .flat_map(|(i, c)| {
+    //         if i != 0 && i % 100 == 0 {
+    //             Some('\n')
+    //         } else {
+    //             None
+    //         }
+    //         .into_iter()
+    //         .chain(std::iter::once(c))
+    //     })
+    //     .collect::<String>();
+
+    msg
 }
 
 static LOGGER: SpiffoLogger = SpiffoLogger;
