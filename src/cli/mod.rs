@@ -12,7 +12,7 @@ pub struct SpiffoCLI {
 
     /// All Spiffo commands
     #[command(subcommand)]
-    command: SpiffoCmd
+    command: SpiffoCmd,
 }
 
 #[derive(Debug, Subcommand)]
@@ -33,5 +33,3 @@ impl SpiffoCmd {
         }
     }
 }
-
-

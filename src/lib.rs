@@ -1,11 +1,11 @@
-pub mod logger;
 pub mod cli;
-pub mod settings;
-pub mod messages;
 pub mod files;
+pub mod logger;
+pub mod messages;
 pub mod serde;
+pub mod settings;
 
-pub use {settings::*, cli::*};
+pub use {cli::*, settings::*};
 
 #[macro_use]
 extern crate log;

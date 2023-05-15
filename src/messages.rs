@@ -1,5 +1,3 @@
-
-
 fn line_break() {
     println!("{}", "-".repeat(80));
 }

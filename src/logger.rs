@@ -1,4 +1,4 @@
-use log::{SetLoggerError, LevelFilter};
+use log::{LevelFilter, SetLoggerError};
 
 struct SpiffoLogger;
 
