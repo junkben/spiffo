@@ -6,15 +6,16 @@ extern crate derive_getters;
 
 pub mod logger;
 pub mod cli;
+pub mod settings;
 pub mod messages;
 pub mod files;
 pub mod serde;
 
 use clap::Parser;
-use cli::Cli;
+use cli::SpiffoCLI;
 
 fn main() {
-    let cli = Cli::parse();
+    let cli = SpiffoCLI::parse();
 
     logger::initialize_logger(*cli.debug()).expect("failed to initialize logger");
 

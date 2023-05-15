@@ -2,7 +2,7 @@ use std::error::Error;
 
 use configparser::ini::Ini;
 use indexmap::IndexMap;
-use crate::cli::Settings;
+use crate::settings::Settings;
 
 pub fn load_config() -> Result<Settings, Box<dyn Error>> {
     // Make a new case-sensitive Ini object to store the data within
