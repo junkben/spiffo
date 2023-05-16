@@ -30,7 +30,7 @@ impl SpiffoCmd {
         use SpiffoCmd::*;
         match self {
             About => about::cmd(),
-            Config(args) => args.command().execute(),
+            Config(args) => args.execute(),
         }
     }
 }

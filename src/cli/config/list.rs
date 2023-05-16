@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use clap::Args;
 use indexmap::IndexMap;
 
@@ -9,27 +11,27 @@ pub struct ListArgs {
 }
 
 impl ListArgs {
-    pub fn execute(&self) {
+    pub fn execute(&self, path: impl AsRef<Path>) {
         match self.changes {
-            true => list_changes(),
-            false => list(),
+            true => list_changes(path),
+            false => list(path),
         }
     }
 }
 
 /// `spiffo config list`
-pub fn list() {
+pub fn list(path: impl AsRef<Path>) {
     debug!("Printing config map");
 
-    let config_map = super::load_config_map();
+    let config_map = super::read_config_map(path);
     info!("Config Settings Map:\n{:#?}", config_map)
 }
 
 /// `spiffo config list --changes`
-pub fn list_changes() {
+pub fn list_changes(path: impl AsRef<Path>) {
     debug!("Printing config map, changed only");
 
-    let map_current = super::load_config_map();
+    let map_current = super::read_config_map(path);
     let map_defaults = super::default_config_map();
 
     let mut map_changed = IndexMap::new();

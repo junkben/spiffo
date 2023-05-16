@@ -4,16 +4,11 @@ use crate::settings::Settings;
 use configparser::ini::Ini;
 use indexmap::IndexMap;
 
-use super::read_on_path;
-
-static PATH: &str = "C:/Users/harru/Zomboid/Server/servertest.ini";
-
-pub fn try_load_config_map() -> Result<IndexMap<String, String>, Box<dyn Error>> {
-    debug!("Checking for config file on path: {PATH}");
+pub fn read_config_map(path: impl AsRef<Path>) -> Result<IndexMap<String, String>, Box<dyn Error>> {
+    debug!("Checking for config file on path: {:?}", path.as_ref());
 
     let mut config = create_ini();
-    let full_map = config.load(PATH)?;
-    debug!("Successfully read config contents");
+    let full_map = config.load(path)?;
 
     let config = full_map.get("default").unwrap().clone();
     let config_map = config
@@ -24,16 +19,16 @@ pub fn try_load_config_map() -> Result<IndexMap<String, String>, Box<dyn Error>>
     Ok(config_map)
 }
 
-pub fn try_load_settings() -> Result<Settings, Box<dyn Error>> {
-    let config_map = try_load_config_map()?;
+pub fn read_settings_from_config(path: impl AsRef<Path>) -> Result<Settings, Box<dyn Error>> {
+    let config_map = read_config_map(path)?;
     let settings = Settings::from(config_map);
 
     debug!("{:?}", settings);
     Ok(settings)
 }
 
-pub fn try_save_config_map(map: IndexMap<String, String>) -> Result<(), Box<dyn Error>> {
-    let config_str = read_on_path(PATH)?;
+pub fn write_to_config_map(map: IndexMap<String, String>, path: impl AsRef<Path>) -> Result<(), Box<dyn Error>> {
+    let config_str = super::read_on_path(path.as_ref())?;
     let updated_config_str = config_str
         .split_terminator("\r\n")
         .map(|entry| {
@@ -52,9 +47,7 @@ pub fn try_save_config_map(map: IndexMap<String, String>) -> Result<(), Box<dyn 
         .collect::<Vec<_>>()
         .join("\r\n");
 
-    debug!("Writing to config");
-    std::fs::write(PATH, updated_config_str)?;
-    Ok(())
+    super::write_to_path(path, &updated_config_str)
 }
 
 /// Makes a case_sensitive Ini object with no ; delimiters
