@@ -8,7 +8,7 @@ impl log::Log for SpiffoLogger {
     }
 
     fn log(&self, record: &log::Record) {
-        println!("{}", compose_log_msg(record))
+        println!("{}", compose_log_msg(record));
     }
 
     fn flush(&self) {}

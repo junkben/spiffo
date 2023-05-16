@@ -3,7 +3,7 @@ pub fn cmd(key: &str) {
     debug!("Printing config value for {key}");
     match get_config_value(key) {
         Some(value) => info!("{key}={value}"),
-        None => info!("No value found for {key}."),
+        None => info!("No config entry found for {key}."),
     }
 }
 

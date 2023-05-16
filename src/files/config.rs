@@ -1,21 +1,19 @@
-use std::error::Error;
+use std::{error::Error, path::Path};
 
 use crate::settings::Settings;
 use configparser::ini::Ini;
 use indexmap::IndexMap;
 
-pub fn load_config_map() -> Result<IndexMap<String, String>, Box<dyn Error>> {
-    // Make a new case-sensitive Ini object to store the data within
-    let mut config = Ini::new_cs();
+use super::read_on_path;
 
-    // Exclude ; from the delimiters
-    config.set_comment_symbols(&['#']);
+static PATH: &str = "C:/Users/harru/Zomboid/Server/servertest.ini";
 
-    let path = "C:/Users/harru/Zomboid/Server/servertest.ini";
-    debug!("Checking for config file on path: {path}");
+pub fn try_load_config_map() -> Result<IndexMap<String, String>, Box<dyn Error>> {
+    debug!("Checking for config file on path: {PATH}");
 
-    let full_map = config.load(path)?;
-    debug!("Loaded config contents");
+    let mut config = create_ini();
+    let full_map = config.load(PATH)?;
+    debug!("Successfully read config contents");
 
     let config = full_map.get("default").unwrap().clone();
     let config_map = config
@@ -26,14 +24,46 @@ pub fn load_config_map() -> Result<IndexMap<String, String>, Box<dyn Error>> {
     Ok(config_map)
 }
 
-pub fn load_settings() -> Result<Settings, Box<dyn Error>> {
-    let config_map = load_config_map()?;
+pub fn try_load_settings() -> Result<Settings, Box<dyn Error>> {
+    let config_map = try_load_config_map()?;
     let settings = Settings::from(config_map);
 
     debug!("{:?}", settings);
     Ok(settings)
 }
 
-pub fn save_config_map(map: IndexMap<String, String>) -> Result<(), Box<dyn Error>> {
-    todo!()
+pub fn try_save_config_map(map: IndexMap<String, String>) -> Result<(), Box<dyn Error>> {
+    let config_str = read_on_path(PATH)?;
+    let updated_config_str = config_str
+        .split_terminator("\r\n")
+        .map(|entry| {
+            let (lhs, _) = match entry.split_once("=") {
+                Some((l, r)) => (l, r),
+                None => return entry.to_string(),
+            };
+
+            let new_value = match map.keys().find(|&k| entry.contains(&format!("{k}="))) {
+                Some(key) => map.get(key).unwrap(),
+                None => return entry.to_string(),
+            };
+
+            [lhs, new_value].join("=")
+        })
+        .collect::<Vec<_>>()
+        .join("\r\n");
+
+    debug!("Writing to config");
+    std::fs::write(PATH, updated_config_str)?;
+    Ok(())
+}
+
+/// Makes a case_sensitive Ini object with no ; delimiters
+fn create_ini() -> Ini {
+    // Make a new case-sensitive Ini object to store the data within
+    let mut config = Ini::new_cs();
+
+    // Exclude ; from the delimiters
+    config.set_comment_symbols(&['#']);
+
+    config
 }

@@ -5,13 +5,13 @@ use indexmap::IndexMap;
 pub struct ListArgs {
     /// Only list config values that are changed from their defaults
     #[arg(short, long)]
-    changed_only: bool,
+    changes: bool,
 }
 
 impl ListArgs {
     pub fn execute(&self) {
-        match self.changed_only {
-            true => list_changed_only(),
+        match self.changes {
+            true => list_changes(),
             false => list(),
         }
     }
@@ -25,8 +25,8 @@ pub fn list() {
     info!("Config Settings Map:\n{:#?}", config_map)
 }
 
-/// `spiffo config list -c`
-pub fn list_changed_only() {
+/// `spiffo config list --changes`
+pub fn list_changes() {
     debug!("Printing config map, changed only");
 
     let map_current = super::load_config_map();
@@ -34,13 +34,10 @@ pub fn list_changed_only() {
 
     let mut map_changed = IndexMap::new();
     for (key, default_value) in map_defaults.iter() {
-        let current_value = match map_current.get(key) {
-            Some(v) => v,
-            None => {
-                error!("failed to find key {key} in map_defaults");
-                std::process::exit(0)
-            }
-        };
+        let current_value = map_current.get(key).unwrap_or_else(|| {
+            error!("failed to find key {key} in map_defaults");
+            std::process::exit(1)
+        });
 
         if current_value != default_value {
             map_changed.insert(key.clone(), current_value.clone());
@@ -48,7 +45,7 @@ pub fn list_changed_only() {
     }
 
     match map_changed.len() {
-        l if l == 0 => info!("All settings are their default value."),
-        _ => info!("Settings that are changed from their default:\n{map_changed:#?}"),
+        l if l == 0 => info!("All config entries are set to the default value."),
+        _ => info!("Config entries that are changed from their default:\n{map_changed:#?}"),
     }
 }

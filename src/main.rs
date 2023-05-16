@@ -7,7 +7,6 @@ extern crate derive_getters;
 pub mod cli;
 pub mod files;
 pub mod logger;
-pub mod messages;
 pub mod serde;
 pub mod settings;
 

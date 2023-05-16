@@ -57,12 +57,12 @@ impl ConfigCommands {
 }
 
 fn load_config_map() -> IndexMap<String, String> {
-    crate::files::load_config_map().expect("failed to get config map")
+    crate::files::try_load_config_map().expect("failed to load config map")
 }
 
 /// Sets the values of config keys via IndexMap
-fn save_config_map(map: &IndexMap<String, String>) {
-    todo!()
+fn save_config_map(map: IndexMap<String, String>) {
+    crate::files::try_save_config_map(map).expect("failed to save config map")
 }
 
 fn default_config_map() -> IndexMap<String, String> {

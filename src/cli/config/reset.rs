@@ -6,7 +6,12 @@ use crate::settings::Settings;
 pub fn cmd() {
     debug!("Resetting config map to defaults");
 
-    let settings_defaults = Settings::default();
-    let map_defaults: IndexMap<String, String> = settings_defaults.into();
-    todo!()
+    let mut map = super::load_config_map();
+    let map_defaults = super::default_config_map();
+
+    for (key, default_value) in map_defaults.iter() {
+        map.insert(key.clone(), default_value.clone());
+    }
+
+    super::save_config_map(map)
 }

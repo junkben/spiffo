@@ -1,3 +1,4 @@
+mod about;
 mod config;
 
 use clap::{Parser, Subcommand};
@@ -28,7 +29,7 @@ impl SpiffoCmd {
     pub fn execute(&self) {
         use SpiffoCmd::*;
         match self {
-            About => crate::messages::about(),
+            About => about::cmd(),
             Config(args) => args.command().execute(),
         }
     }

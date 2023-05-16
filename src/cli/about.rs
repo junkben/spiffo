@@ -1,12 +1,9 @@
-fn line_break() {
-    println!("{}", "-".repeat(80));
+/// `spiffo about`
+pub fn cmd() {
+    print_about_msg()
 }
 
-fn newline() {
-    println!("");
-}
-
-pub fn about() {
+fn print_about_msg() {
     line_break();
     println!("Spiffo is a command-line interface meant to manage a dedicated Project Zomboid");
     println!("multiplayer server with support for Steam Workshop mods, backups, updates, etc.");
@@ -19,4 +16,12 @@ pub fn about() {
     newline();
     println!("Copyright (c) 2023, junkben");
     line_break();
+}
+
+fn line_break() {
+    println!("{}", "-".repeat(80));
+}
+
+fn newline() {
+    println!("");
 }
