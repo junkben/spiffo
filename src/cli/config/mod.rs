@@ -1,5 +1,6 @@
 use std::path::Path;
 
+use anyhow::Context;
 use clap::{Args, Subcommand};
 use indexmap::IndexMap;
 
@@ -30,9 +31,9 @@ pub struct ConfigArgs {
 }
 
 impl ConfigArgs {
-    pub fn execute(&self) {
+    pub fn execute(&self) -> anyhow::Result<()> {
         let config_path = format!("{}/{}/{}", self.home, self.directory, self.filename);
-        
+
         debug!("Path to config file: [{config_path}]");
         self.command.execute(config_path)
     }
@@ -59,25 +60,16 @@ pub enum ConfigCommands {
 }
 
 impl ConfigCommands {
-    pub fn execute(&self, path: impl AsRef<Path>) {
+    pub fn execute(&self, path: impl AsRef<Path>) -> anyhow::Result<()> {
         use ConfigCommands::*;
         match self {
-            Get { key } => get::cmd(key, path),
+            Get { key } => get::cmd(key, path).context("config get failed"),
             Set(args) => args.execute(path),
             List(args) => args.execute(path),
-            Reset => reset::cmd(path),
-            Validate => validate::cmd(path),
+            Reset => reset::cmd(path).context("config reset failed"),
+            Validate => validate::cmd(path).context("config validate failed"),
         }
     }
-}
-
-fn read_config_map(path: impl AsRef<Path>) -> IndexMap<String, String> {
-    crate::files::read_config_map(path).expect("failed to load config map")
-}
-
-/// Sets the values of config keys via IndexMap
-fn write_to_config_map(map: IndexMap<String, String>, path: impl AsRef<Path>) {
-    crate::files::write_to_config_map(map, path).expect("failed to save config map")
 }
 
 fn default_config_map() -> IndexMap<String, String> {

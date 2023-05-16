@@ -1,8 +1,12 @@
 use std::path::Path;
 
-/// `spiffo config reset`
-pub fn cmd(path: impl AsRef<Path>) {
-    debug!("Resetting config map to defaults");
+use anyhow::Result;
 
-    todo!()
+/// `spiffo config reset`
+pub fn cmd(_path: impl AsRef<Path>) -> Result<()> {
+    debug!("Validating config map entries");
+
+    error!("`config validate` not yet implemented");
+
+    Ok(())
 }

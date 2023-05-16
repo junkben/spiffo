@@ -1,5 +1,5 @@
 pub mod cli;
-pub mod files;
+pub mod fs;
 pub mod logger;
 pub mod serde;
 pub mod settings;

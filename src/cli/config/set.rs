@@ -1,5 +1,6 @@
 use std::path::Path;
 
+use anyhow::Result;
 use clap::{Args, Subcommand};
 
 #[derive(Debug, Args)]
@@ -13,7 +14,7 @@ pub struct SetArgs {
 }
 
 impl SetArgs {
-    pub fn execute(&self, path: impl AsRef<Path>) {
+    pub fn execute(&self, path: impl AsRef<Path>) -> Result<()> {
         let binding = SetCommands::Entry(self.key_pair.clone());
         let set_cmd = match &self.command {
             Some(s) => s,
@@ -30,16 +31,16 @@ pub enum SetCommands {
     /// Mass entry of config file with content verbatim. Does not validate new entries.
     Dump {
         /// Exact data to write to config file
-        contents: String
-    }
+        contents: String,
+    },
 }
 
 impl SetCommands {
-    pub fn execute(&self, path: impl AsRef<Path>) {
+    pub fn execute(&self, path: impl AsRef<Path>) -> Result<()> {
         use SetCommands::*;
         match self {
             Entry(args) => args.execute(path),
-            Dump { contents } => crate::files::write_to_path(path, contents).unwrap(),
+            Dump { contents } => crate::fs::write_to_path(path, contents),
         }
     }
 }
@@ -53,37 +54,36 @@ pub struct SetEntryArgs {
 
     /// Force writing the key-value pair entry without regard for validation
     #[arg(short, long)]
-    force: bool
+    force: bool,
 }
 
 impl SetEntryArgs {
-    pub fn execute(&self, path: impl AsRef<Path>) {
+    pub fn execute(&self, path: impl AsRef<Path>) -> Result<()> {
         cmd(self.key(), self.value(), path)
     }
 }
 
 /// `spiffo config set <KEY> <VALUE>`
-pub fn cmd(key: &str, value: &str, path: impl AsRef<Path>) {
+pub fn cmd(key: &str, value: &str, path: impl AsRef<Path>) -> Result<()> {
     debug!("Changing setting {key} => {value}");
 
-    set_config_map(key.to_string(), value.to_string(), path)
-}
+    let mut config_map = crate::fs::read_config_map(path.as_ref())?;
 
-/// Sets the values of config keys via IndexMap
-fn set_config_map(key: String, value: String, path: impl AsRef<Path>) {
-    let mut config_map = super::read_config_map(path.as_ref());
+    if !config_map.contains_key(key) {
+        info!("{key} not found in config");
+        return Ok(());
+    }
 
+    // This unwrap should never result in a panic
     let old_value = config_map
-        .insert(key.clone(), value.clone())
-        .unwrap_or_else(|| {
-            error!("key {key} does not exist");
-            std::process::exit(1)
-        });
+        .insert(key.to_string(), value.to_string())
+        .unwrap();
 
     if old_value == value {
-        info!("{key} is already set to: {old_value}")
+        info!("{key} is already set to: {old_value}");
+        Ok(())
     } else {
         info!("{key}: {old_value} => {value}");
-        super::write_to_config_map(config_map, path)
+        crate::fs::write_to_config_map(config_map, path)
     }
 }

@@ -1,6 +1,7 @@
 mod about;
 mod config;
 
+use anyhow::Context;
 use clap::{Parser, Subcommand};
 
 #[derive(Parser, Getters)]
@@ -26,10 +27,10 @@ pub enum SpiffoCmd {
 }
 
 impl SpiffoCmd {
-    pub fn execute(&self) {
+    pub fn execute(&self) -> anyhow::Result<()> {
         use SpiffoCmd::*;
         match self {
-            About => about::cmd(),
+            About => about::cmd().context("about cmd failed"),
             Config(args) => args.execute(),
         }
     }

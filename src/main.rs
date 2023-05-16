@@ -5,7 +5,7 @@ extern crate log;
 extern crate derive_getters;
 
 pub mod cli;
-pub mod files;
+pub mod fs;
 pub mod logger;
 pub mod serde;
 pub mod settings;
@@ -18,7 +18,7 @@ fn main() {
 
     logger::initialize_logger(*cli.debug()).expect("failed to initialize logger");
 
-    // files::load_config().unwrap();
-
-    cli.command().execute()
+    if let Err(err) = cli.command().execute() {
+        error!("spiffo failed: {err}");
+    }
 }

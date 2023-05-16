@@ -1,6 +1,7 @@
 /// `spiffo about`
-pub fn cmd() {
-    print_about_msg()
+pub fn cmd() -> anyhow::Result<()> {
+    print_about_msg();
+    Ok(())
 }
 
 fn print_about_msg() {

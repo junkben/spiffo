@@ -1,16 +1,21 @@
-use std::{error::Error, path::Path};
+use std::path::Path;
 
 use crate::settings::Settings;
+use anyhow::{Context, Result};
 use configparser::ini::Ini;
 use indexmap::IndexMap;
 
-pub fn read_config_map(path: impl AsRef<Path>) -> Result<IndexMap<String, String>, Box<dyn Error>> {
+pub fn read_config_map(path: impl AsRef<Path>) -> Result<IndexMap<String, String>> {
     debug!("Checking for config file on path: {:?}", path.as_ref());
 
     let mut config = create_ini();
-    let full_map = config.load(path)?;
+    let full_map = config.load(path).expect("config load failed");
 
-    let config = full_map.get("default").unwrap().clone();
+    let config = full_map
+        .get("default")
+        .expect("no \"default\" section")
+        .clone();
+
     let config_map = config
         .into_iter()
         .map(|(k, v)| (k, v.unwrap()))
@@ -19,16 +24,16 @@ pub fn read_config_map(path: impl AsRef<Path>) -> Result<IndexMap<String, String
     Ok(config_map)
 }
 
-pub fn read_settings_from_config(path: impl AsRef<Path>) -> Result<Settings, Box<dyn Error>> {
-    let config_map = read_config_map(path)?;
+pub fn read_settings_from_config(path: impl AsRef<Path>) -> Result<Settings> {
+    let config_map = read_config_map(path).context("failed to read config map")?;
     let settings = Settings::from(config_map);
 
     debug!("{:?}", settings);
     Ok(settings)
 }
 
-pub fn write_to_config_map(map: IndexMap<String, String>, path: impl AsRef<Path>) -> Result<(), Box<dyn Error>> {
-    let config_str = super::read_on_path(path.as_ref())?;
+pub fn write_to_config_map(map: IndexMap<String, String>, path: impl AsRef<Path>) -> Result<()> {
+    let config_str = crate::fs::read_on_path(path.as_ref())?;
     let updated_config_str = config_str
         .split_terminator("\r\n")
         .map(|entry| {
