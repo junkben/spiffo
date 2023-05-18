@@ -19,11 +19,11 @@ pub struct ConfigArgs {
     home: String,
 
     /// Path to the Zomboid Server directory, assuming it's somewhere within $HOME
-    #[arg(short, long, env = "SERVER_DIR", default_value_t = format!("Zomboid/Server"))]
+    #[arg(long, env = "SERVER_DIR", default_value_t = format!("Zomboid/Server"))]
     directory: String,
 
     /// Name of the server ini config file
-    #[arg(short, long, env = "SERVER_FILENAME", default_value_t = format!("servertest.ini"))]
+    #[arg(long, env = "SERVER_FILENAME", default_value_t = format!("servertest.ini"))]
     filename: String,
 
     #[command(subcommand)]
@@ -42,10 +42,7 @@ impl ConfigArgs {
 #[derive(Debug, Subcommand)]
 pub enum ConfigCommands {
     /// Retrieve a config value from the entry key
-    Get {
-        /// The key of the config entry
-        key: String,
-    },
+    Get(get::GetArgs),
     /// Set the value of a config entry
     Set(set::SetArgs),
 
@@ -63,7 +60,7 @@ impl ConfigCommands {
     pub fn execute(&self, path: impl AsRef<Path>) -> anyhow::Result<()> {
         use ConfigCommands::*;
         match self {
-            Get { key } => get::cmd(key, path).context("config get failed"),
+            Get(args) => args.execute(path),
             Set(args) => args.execute(path),
             List(args) => args.execute(path),
             Reset => reset::cmd(path).context("config reset failed"),

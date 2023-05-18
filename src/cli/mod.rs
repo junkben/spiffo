@@ -8,13 +8,13 @@ use clap::{Parser, Subcommand};
 #[command(author, version)]
 #[command(propagate_version = true)]
 pub struct SpiffoCLI {
-    /// Enable debug mode
-    #[arg(long, env = "DEBUG", default_value_t = true)]
-    debug: bool,
-
     /// All Spiffo commands
     #[command(subcommand)]
     command: SpiffoCmd,
+
+    /// Enable debug mode
+    #[arg(long, env = "DEBUG", default_value_t = true)]
+    debug: bool,
 }
 
 #[derive(Debug, Subcommand)]

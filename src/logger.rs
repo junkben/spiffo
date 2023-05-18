@@ -8,38 +8,37 @@ impl log::Log for SpiffoLogger {
     }
 
     fn log(&self, record: &log::Record) {
-        println!("{}", compose_log_msg(record));
+        let msg = if record.level() >= log::Level::Debug {
+            log_msg(record)
+        } else {
+            log_msg(record)
+        };
+        println!("{msg}")
     }
 
     fn flush(&self) {}
 }
 
-fn compose_log_msg(record: &log::Record) -> String {
-    // Makes the log prefix the same length no matter the log level
-    let prefix = format!(
-        "{:width$}",
-        format!("[SPIFFO][{}]", record.level()),
-        width = 16
-    );
+//fn debug_msg(record: &log::Record) -> String {
+//    use chrono::Local;
+//    format!(
+//        "[{}][SPIFFO][{}] {}",
+//        Local::now().format("%Y-%m-%d %H:%M:%S"),
+//        record.level(),
+//        record.args(),
+//    )
+//}
 
-    // Put prefix and msg contents together
-    let msg = format!("{} | {}", prefix, record.args());
-
-    // // newspace every 100 characters
-    // let msg = raw.chars()
-    //     .enumerate()
-    //     .flat_map(|(i, c)| {
-    //         if i != 0 && i % 100 == 0 {
-    //             Some('\n')
-    //         } else {
-    //             None
-    //         }
-    //         .into_iter()
-    //         .chain(std::iter::once(c))
-    //     })
-    //     .collect::<String>();
-
-    msg
+fn log_msg(record: &log::Record) -> String {
+    format!(
+        "{} {}",
+        format!(
+            "{:width$}",
+            format!("[SPIFFO][{}]", record.level()),
+            width = 15,
+        ),
+        record.args()
+    )
 }
 
 static LOGGER: SpiffoLogger = SpiffoLogger;

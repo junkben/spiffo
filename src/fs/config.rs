@@ -28,7 +28,7 @@ pub fn read_settings_from_config(path: impl AsRef<Path>) -> Result<Settings> {
     let config_map = read_config_map(path).context("failed to read config map")?;
     let settings = Settings::from(config_map);
 
-    debug!("{:?}", settings);
+    debug!("{:#?}", settings);
     Ok(settings)
 }
 

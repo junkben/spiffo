@@ -106,6 +106,16 @@ impl Into<IndexMap<String, String>> for Settings {
     }
 }
 
+impl std::fmt::Display for Settings {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).expect("failed serde_json conversion")
+        )
+    }
+}
+
 #[macro_export]
 macro_rules! settings {
     (
@@ -136,6 +146,12 @@ macro_rules! settings {
                         $key: $value
                     ),*
                 }
+            }
+        }
+
+        impl std::fmt::Display for $struct_name {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                write!(f, "{}", serde_json::to_string_pretty(self).expect("failed serde_json conversion"))
             }
         }
     };
