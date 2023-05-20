@@ -6,8 +6,10 @@ extern crate derive_getters;
 
 pub mod cli;
 pub mod fs;
+pub mod java;
 pub mod logger;
 pub mod serde;
+pub mod server;
 pub mod settings;
 
 use clap::Parser;

@@ -1,0 +1,42 @@
+{
+    "name": "Rust",
+
+    "dockerComposeFile": "docker-compose.yml",
+
+    "service": "service",
+
+    "workspaceFolder": "/workspace/spiffo",
+
+    "remoteUser": "spiffodev",
+
+    "postCreateCommand": "cargo build",
+
+    "forwardPorts": [/*8766, 16261, 16262*/],
+
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "editor": {
+                    "defaultFormatter": "rust-lang.rust-analyzer",
+                    "formatOnSave": true,
+                    "wordWrap": "wordWrapColumn",
+                    "wordWrapColumn": 100
+                },
+                "files": {
+                    "eol": "\n",
+                    "autoSave": "afterDelay",
+                    "autoSaveDelay": 5000
+                }
+            },
+            "extensions": [
+                "formulahendry.code-runner",
+                "vadimcn.vscode-lldb",
+                "serayuzgur.crates",
+                "tamasfe.even-better-toml",
+                "rust-lang.rust-analyzer",
+                "mutantdino.resourcemonitor"
+            ]
+        }
+    }
+
+}

@@ -1,7 +1,9 @@
 pub mod cli;
 pub mod fs;
+pub mod java;
 pub mod logger;
 pub mod serde;
+pub mod server;
 pub mod settings;
 
 pub use {cli::*, settings::*};

@@ -1,5 +1,6 @@
 mod about;
 mod config;
+mod start;
 
 use anyhow::Context;
 use clap::{Parser, Subcommand};
@@ -24,6 +25,8 @@ pub enum SpiffoCmd {
 
     /// Configure settings for the server
     Config(config::ConfigArgs),
+
+    Start,
 }
 
 impl SpiffoCmd {
@@ -32,6 +35,7 @@ impl SpiffoCmd {
         match self {
             About => about::cmd().context("about cmd failed"),
             Config(args) => args.execute(),
+            Start => start::cmd().context("start cmd failed"),
         }
     }
 }

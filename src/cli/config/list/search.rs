@@ -3,6 +3,7 @@ use std::path::Path;
 use anyhow::Result;
 use indexmap::IndexMap;
 
+/// `spiffo config list --search <SEARCH>`
 pub fn list_search(path: impl AsRef<Path>, find: &str) -> Result<()> {
     debug!("Listing config entries including {find}");
 

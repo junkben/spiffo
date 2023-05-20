@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  service:
+    container_name: spiffo_service
+    build:
+      context: "."
+      dockerfile: Dockerfile.dev
+    ports:
+    - "8766:8766/udp"
+    - "16261:16261/udp"
+    - "16262:16272/tcp"
+    volumes:
+    - ..:/workspace/spiffo
+    entrypoint: ["/bin/bash", "sleep 1"]

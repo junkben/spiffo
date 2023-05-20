@@ -26,6 +26,7 @@ pub enum ListSubsets {
 }
 
 impl ListSubsets {
+    /// `spiffo config list --subset <SUBSET>`
     pub fn execute(&self, path: impl AsRef<Path>) -> Result<()> {
         let settings: Settings = crate::fs::read_settings_from_config(path)?;
 

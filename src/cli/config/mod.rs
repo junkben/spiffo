@@ -13,18 +13,15 @@ mod set;
 mod validate;
 
 #[derive(Debug, Args, Getters)]
+#[command(visible_aliases = ["cfg", "configure"])]
 pub struct ConfigArgs {
-    /// Home path, typically where the server directory lives
-    #[arg(long, env = "HOME")]
-    home: String,
-
-    /// Path to the Zomboid Server directory, assuming it's somewhere within $HOME
-    #[arg(long, env = "SERVER_DIR", default_value_t = format!("Zomboid/Server"))]
-    directory: String,
+    /// Path to the Zomboid Server directory
+    #[arg(long)]
+    directory: Option<String>,
 
     /// Name of the server ini config file
-    #[arg(long, env = "SERVER_FILENAME", default_value_t = format!("servertest.ini"))]
-    filename: String,
+    #[arg(long)]
+    filename: Option<String>,
 
     #[command(subcommand)]
     command: ConfigCommands,
@@ -32,7 +29,12 @@ pub struct ConfigArgs {
 
 impl ConfigArgs {
     pub fn execute(&self) -> anyhow::Result<()> {
-        let config_path = format!("{}/{}/{}", self.home, self.directory, self.filename);
+        let dir = self.directory.clone().unwrap_or(crate::fs::server_dir()?);
+        let file = self
+            .filename
+            .clone()
+            .unwrap_or(crate::fs::zomboid_config_filename()?);
+        let config_path = format!("{dir}/{file}");
 
         debug!("Path to config file: [{config_path}]");
         self.command.execute(config_path)
@@ -53,6 +55,7 @@ pub enum ConfigCommands {
     Reset,
 
     /// Verifies each config entry for valid values
+    #[command(hide = true)]
     Validate,
 }
 
