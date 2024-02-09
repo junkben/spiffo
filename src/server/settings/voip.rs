@@ -3,11 +3,13 @@ crate::settings!(VOIPSettings {
     #[serde(with = "crate::serde::bool")]
     voice_enable: bool = true,
 
-    /// The minimum tile distance over which VOIP sounds can be heard.\nMinimum=0.00 Maximum=100000.00 Default=10.00
+    /// The minimum tile distance over which VOIP sounds can be
+    /// heard.\nMinimum=0.00 Maximum=100000.00 Default=10.00
     #[serde(with = "crate::serde::f32")]
     voice_min_distance: f32 = 10.0,
 
-    /// The maximum tile distance over which VOIP sounds can be heard.\nMinimum=0.00 Maximum=100000.00 Default=100.00
+    /// The maximum tile distance over which VOIP sounds can be
+    /// heard.\nMinimum=0.00 Maximum=100000.00 Default=100.00
     #[serde(with = "crate::serde::f32")]
     voice_max_distance: f32 = 100.0,
 

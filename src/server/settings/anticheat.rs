@@ -1,5 +1,6 @@
 crate::settings!(AntiCheatSettings {
-    /// Kick players that appear to be moving faster than is possible. May be buggy -- use with caution.
+    /// Kick players that appear to be moving faster than is possible. May be
+    /// buggy -- use with caution.
     #[serde(with = "crate::serde::bool")]
     kick_fast_players: bool = false,
 
@@ -88,39 +89,49 @@ crate::settings!(AntiCheatSettings {
     #[serde(with = "crate::serde::bool")]
     anti_cheat_protection_type_20: bool = true,
 
+    /// Disables anti-cheat protection for type 21.
     #[serde(with = "crate::serde::bool")]
     anti_cheat_protection_type_21: bool = true,
 
+    /// Disables anti-cheat protection for type 22.
     #[serde(with = "crate::serde::bool")]
     anti_cheat_protection_type_22: bool = true,
 
+    /// Disables anti-cheat protection for type 23.
     #[serde(with = "crate::serde::bool")]
     anti_cheat_protection_type_23: bool = true,
 
+    /// Disables anti-cheat protection for type 24.
     #[serde(with = "crate::serde::bool")]
     anti_cheat_protection_type_24: bool = true,
 
-    /// Threshold value multiplier for anti-cheat protection: type 2.\nMinimum=1.00 Maximum=10.00 Default=3.00
+    /// Threshold value multiplier for anti-cheat protection: type
+    /// 2.\nMinimum=1.00 Maximum=10.00 Default=3.00
     #[serde(with = "crate::serde::f32")]
     anti_cheat_protection_type_2_threshold_multiplier: f32 = 3.0,
 
-    /// Threshold value multiplier for anti-cheat protection: type 3.\nMinimum=1.00 Maximum=10.00 Default=1.00
+    /// Threshold value multiplier for anti-cheat protection: type
+    /// 3.\nMinimum=1.00 Maximum=10.00 Default=1.00
     #[serde(with = "crate::serde::f32")]
     anti_cheat_protection_type_3_threshold_multiplier: f32 = 1.0,
 
-    /// Threshold value multiplier for anti-cheat protection: type 4.\nMinimum=1.00 Maximum=10.00 Default=1.00
+    /// Threshold value multiplier for anti-cheat protection: type
+    /// 4.\nMinimum=1.00 Maximum=10.00 Default=1.00
     #[serde(with = "crate::serde::f32")]
     anti_cheat_protection_type_4_threshold_multiplier: f32 = 1.0,
 
-    /// Threshold value multiplier for anti-cheat protection: type 9.\nMinimum=1.00 Maximum=10.00 Default=1.00
+    /// Threshold value multiplier for anti-cheat protection: type
+    /// 9.\nMinimum=1.00 Maximum=10.00 Default=1.00
     #[serde(with = "crate::serde::f32")]
     anti_cheat_protection_type_9_threshold_multiplier: f32 = 1.0,
 
-    /// Threshold value multiplier for anti-cheat protection: type 15.\nMinimum=1.00 Maximum=10.00 Default=1.00
+    /// Threshold value multiplier for anti-cheat protection: type
+    /// 15.\nMinimum=1.00 Maximum=10.00 Default=1.00
     #[serde(with = "crate::serde::f32")]
     anti_cheat_protection_type_15_threshold_multiplier: f32 = 1.0,
 
-    /// Threshold value multiplier for anti-cheat protection: type 20.\nMinimum=1.00 Maximum=10.00 Default=1.00
+    /// Threshold value multiplier for anti-cheat protection: type
+    /// 20.\nMinimum=1.00 Maximum=10.00 Default=1.00
     #[serde(with = "crate::serde::f32")]
     anti_cheat_protection_type_20_threshold_multiplier: f32 = 1.0,
 

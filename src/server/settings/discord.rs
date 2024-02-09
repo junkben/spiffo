@@ -6,10 +6,12 @@ crate::settings!(DiscordSettings {
     /// Discord bot access token
     discord_token: String = format!(""),
 
-    /// The Discord channel name. (Try the separate channel ID option if having difficulties)
+    /// The Discord channel name. (Try the separate channel ID option if having
+    /// difficulties)
     discord_channel: String = format!(""),
 
-    /// The Discord channel ID. (Use if having difficulties with Discord channel name option)
+    /// The Discord channel ID. (Use if having difficulties with Discord
+    /// channel name option)
     #[serde(rename = "DiscordChannelID")]
     discord_channel_id: String = format!("")
 });

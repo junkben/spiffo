@@ -1,5 +1,6 @@
-use anyhow::Result;
 use std::env;
+
+use anyhow::Result;
 
 pub fn home() -> Result<String> {
     let home = env::var("HOME")?;
@@ -23,13 +24,16 @@ macro_rules! home_relative_dirs {
 }
 
 pub fn dedicated_server_dir() -> Result<String> {
-    let path = "C:/Program Files (x86)/Steam/steamapps/common/Project Zomboid Dedicated Server".to_owned();
+    let path =
+        "C:/Program Files (x86)/Steam/steamapps/common/Project Zomboid Dedicated Server".to_owned();
     debug!("dedicated_server_dir: {path}");
     Ok(path)
 }
 
 pub fn java_binary_dir() -> Result<String> {
-    let path = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Project Zomboid Dedicated Server\\jre64\\bin".to_owned();
+    let path = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Project Zomboid Dedicated \
+                Server\\jre64\\bin"
+        .to_owned();
     debug!("java_binary_dir: {path}");
     Ok(path)
 }

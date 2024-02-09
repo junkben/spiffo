@@ -20,15 +20,19 @@ crate::settings!(SafehouseSettings {
     #[serde(with = "crate::serde::bool")]
     safehouse_allow_loot: bool = true,
 
-    /// Players will respawn in a safehouse that they were a member of before they died
+    /// Players will respawn in a safehouse that they were a member of before
+    /// they died
     #[serde(with = "crate::serde::bool")]
     safehouse_allow_respawn: bool = false,
 
-    /// Players must have survived this number of in-game days before they are allowed to claim a safehouse\nMinimum=0 Maximum=2147483647 Default=0
+    /// Players must have survived this number of in-game days before they are
+    /// allowed to claim a safehouse\nMinimum=0 Maximum=2147483647 Default=0
     #[serde(with = "crate::serde::u32")]
     safehouse_day_survived_to_claim: u32 = 0,
 
-    /// Players are automatically removed from a safehouse they have not visited for this many real-world hours\nMinimum=0 Maximum=2147483647 Default=144
+    /// Players are automatically removed from a safehouse they have not
+    /// visited for this many real-world hours\nMinimum=0
+    /// Maximum=2147483647 Default=144
     #[serde(rename = "SafeHouseRemovalTime")]
     #[serde(with = "crate::serde::u32")]
     safehouse_removal_time: u32 = 144,
@@ -37,7 +41,8 @@ crate::settings!(SafehouseSettings {
     #[serde(with = "crate::serde::bool")]
     safehouse_allow_non_residential: bool = false,
 
-    /// Safehouse acts like a normal house if a member of the safehouse is connected (so secure when players are offline)
+    /// Safehouse acts like a normal house if a member of the safehouse is
+    /// connected (so secure when players are offline)
     #[serde(with = "crate::serde::bool")]
     disable_safehouse_when_player_connected: bool = false
 });

@@ -9,6 +9,8 @@ mod subset;
 
 pub use subset::ListSubsets;
 
+use crate::{fs::ReadFromFile, server::Settings};
+
 #[derive(Debug, Args, Getters)]
 pub struct ListArgs {
     /// Only list config values that are changed from their defaults
@@ -21,7 +23,7 @@ pub struct ListArgs {
 
     /// Searches for config entries by key
     #[arg(long)]
-    search: Option<String>,
+    search: Option<String>
 }
 
 impl ListArgs {
@@ -34,7 +36,7 @@ impl ListArgs {
         }
         match self.changes {
             true => changes::list_changes(path),
-            false => list(path),
+            false => list(path)
         }
     }
 }
@@ -43,8 +45,9 @@ impl ListArgs {
 pub fn list(path: impl AsRef<Path>) -> Result<()> {
     debug!("Printing config map");
 
-    let config_map = crate::fs::read_config_map(path)?;
+    let config_map = Settings::read_from_file(path)?;
+    let settings_str = serde_json::to_string_pretty(&config_map)?;
 
-    info!("Config Settings Map:\n{:#?}", config_map);
+    info!("Config Settings Map:\n{}", settings_str.as_str());
     Ok(())
 }

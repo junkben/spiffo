@@ -11,13 +11,10 @@ repository = "https://github.com/junkben/spiffo"
 [[bin]]
 name = "spiffo"
 
-[lib]
-name = "spiffo"
-
 [dependencies]
 log = "0.4.17"
 clap = { version = "4.2.7", features = ["derive", "env", "string"]}
-derive-getters = "0.2.1"
+derive-getters = "0.3.0"
 configparser = { version = "3.0.2", features = ["indexmap"] }
 indexmap = { version = "1.9.3", features = ["serde"] }
 serde = {version = "1.0.163", features = ["derive"] }

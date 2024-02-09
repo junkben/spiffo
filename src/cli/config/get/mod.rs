@@ -12,15 +12,18 @@ pub struct GetArgs {
     command: Option<GetCommands>,
 
     #[command(flatten)]
-    key_pair: entry::GetEntryArgs,
+    key_pair: entry::GetEntryArgs
 }
 
 impl GetArgs {
     pub fn execute(&self, path: impl AsRef<Path>) -> Result<()> {
-        let binding = GetCommands::Entry(self.key_pair.clone());
+        let binding = GetCommands::Entry(
+            self.key_pair
+                .clone()
+        );
         let get_cmd = match &self.command {
             Some(s) => s,
-            None => &binding,
+            None => &binding
         };
         get_cmd.execute(path)
     }
@@ -29,14 +32,14 @@ impl GetArgs {
 #[derive(Debug, Subcommand, Clone)]
 pub enum GetCommands {
     /// Get the value of a config entry
-    Entry(entry::GetEntryArgs),
+    Entry(entry::GetEntryArgs)
 }
 
 impl GetCommands {
     pub fn execute(&self, path: impl AsRef<Path>) -> Result<()> {
         use GetCommands::*;
         match self {
-            Entry(args) => args.execute(path),
+            Entry(args) => args.execute(path)
         }
     }
 }

@@ -2,9 +2,6 @@ use std::path::Path;
 
 use anyhow::Context;
 use clap::{Args, Subcommand};
-use indexmap::IndexMap;
-
-use crate::settings::Settings;
 
 mod get;
 mod list;
@@ -24,7 +21,7 @@ pub struct ConfigArgs {
     filename: Option<String>,
 
     #[command(subcommand)]
-    command: ConfigCommands,
+    command: ConfigCommands
 }
 
 impl ConfigArgs {
@@ -56,7 +53,7 @@ pub enum ConfigCommands {
 
     /// Verifies each config entry for valid values
     #[command(hide = true)]
-    Validate,
+    Validate
 }
 
 impl ConfigCommands {
@@ -67,13 +64,7 @@ impl ConfigCommands {
             Set(args) => args.execute(path),
             List(args) => args.execute(path),
             Reset => reset::cmd(path).context("config reset failed"),
-            Validate => validate::cmd(path).context("config validate failed"),
+            Validate => validate::cmd(path).context("config validate failed")
         }
     }
-}
-
-fn default_config_map() -> IndexMap<String, String> {
-    let settings_defaults = Settings::default();
-    let map_defaults: IndexMap<String, String> = settings_defaults.into();
-    map_defaults
 }

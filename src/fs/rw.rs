@@ -1,5 +1,6 @@
-use anyhow::{Context, Result};
 use std::path::Path;
+
+use anyhow::{Context, Result};
 
 pub fn read_on_path(path: impl AsRef<Path>) -> Result<String> {
     debug!("Reading on path {:?}", path.as_ref());

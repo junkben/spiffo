@@ -45,3 +45,5 @@ chown $USER_UID:$USER_GID /home/$USERNAME/.bashrc
 # chown cargo, rustup and builds directories
 mkdir -p $CARGO_HOME $RUSTUP_HOME
 chown -R $USER_UID:$USER_GID $CARGO_HOME $RUSTUP_HOME
+
+

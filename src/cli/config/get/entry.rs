@@ -10,20 +10,20 @@ pub struct GetEntryArgs {
 
     /// Force writing the key-value pair entry without regard for validation
     #[arg(short, long)]
-    force: bool,
+    force: bool
 }
 
 impl GetEntryArgs {
     /// `spiffo config get <KEY>`
     pub fn execute(&self, path: impl AsRef<Path>) -> Result<()> {
-        let key = self.key.as_str();
-        debug!("Printing config value for {key}");
-
-        let config_map = crate::fs::read_config_map(path)?;
-        match config_map.get(key) {
-            Some(value) => info!("{key}={value}"),
-            None => info!("No config entry found for {key}."),
-        }
+        // let key = self.key.as_str();
+        // debug!("Printing config value for {key}");
+        //
+        // let config_map = crate::server::Settings::read_from_file(path)?;
+        // match config_map.get(key) {
+        //    Some(value) => info!("{key}={value}"),
+        //    None => info!("No config entry found for {key}.")
+        //}
         Ok(())
     }
 }

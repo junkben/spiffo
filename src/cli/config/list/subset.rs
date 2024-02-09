@@ -3,7 +3,7 @@ use std::path::Path;
 use anyhow::Result;
 use clap::ValueEnum;
 
-use crate::settings::Settings;
+use crate::{fs::ReadFromFile, server::Settings};
 
 #[derive(Debug, Clone, Eq, PartialEq, ValueEnum)]
 pub enum ListSubsets {
@@ -22,13 +22,13 @@ pub enum ListSubsets {
     Transmission,
     User,
     Voip,
-    World,
+    World
 }
 
 impl ListSubsets {
     /// `spiffo config list --subset <SUBSET>`
     pub fn execute(&self, path: impl AsRef<Path>) -> Result<()> {
-        let settings: Settings = crate::fs::read_settings_from_config(path)?;
+        let settings = Settings::read_from_file(path)?;
 
         use ListSubsets::*;
         let to_print = match self {
@@ -47,7 +47,7 @@ impl ListSubsets {
             Transmission => format!("{}", settings.transmission()),
             User => format!("{}", settings.user()),
             Voip => format!("{}", settings.voip()),
-            World => format!("{}", settings.world()),
+            World => format!("{}", settings.world())
         };
 
         info!("{}", to_print);

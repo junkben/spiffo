@@ -4,7 +4,11 @@ crate::settings!(PvpSettings {
     #[serde(with = "crate::serde::bool")]
     pvp: bool = true,
 
-    /// Players can enter and leave PVP on an individual basis. A player can only hurt another player when at least one of them is in PVP mode - as shown by the unobscured skull and crossbones on the left of the screen. When SafetySystem=false, players are free to hurt each other at any time if PVP is enabled.
+    /// Players can enter and leave PVP on an individual basis. A player can
+    /// only hurt another player when at least one of them is in PVP mode - as
+    /// shown by the unobscured skull and crossbones on the left of the screen.
+    /// When SafetySystem=false, players are free to hurt each other at any
+    /// time if PVP is enabled.
     #[serde(with = "crate::serde::bool")]
     safety_system: bool = true,
 
@@ -12,11 +16,13 @@ crate::settings!(PvpSettings {
     #[serde(with = "crate::serde::bool")]
     show_safety: bool = true,
 
-    /// The time it takes for a player to enter and leave PVP mode\nMinimum=0 Maximum=1000 Default=2
+    /// The time it takes for a player to enter and leave PVP mode\nMinimum=0
+    /// Maximum=1000 Default=2
     #[serde(with = "crate::serde::u32")]
     safety_toggle_timer: u32 = 2,
 
-    /// The delay before a player can enter or leave PVP mode again, having recently done so\nMinimum=0 Maximum=1000 Default=3
+    /// The delay before a player can enter or leave PVP mode again, having
+    /// recently done so\nMinimum=0 Maximum=1000 Default=3
     #[serde(with = "crate::serde::u32")]
     safety_cooldown_timer: u32 = 3,
 
@@ -25,12 +31,14 @@ crate::settings!(PvpSettings {
     #[serde(with = "crate::serde::bool")]
     pvp_melee_while_hit_reaction: bool = false,
 
-    /// Damage multiplier for PVP melee attacks.\nMinimum=0.00 Maximum=500.00 Default=30.00
+    /// Damage multiplier for PVP melee attacks.\nMinimum=0.00 Maximum=500.00
+    /// Default=30.00
     #[serde(rename = "PVPMeleeDamageModifier")]
     #[serde(with = "crate::serde::f32")]
     pvp_melee_damage_modifier: f32 = 30.0,
 
-    /// Damage multiplier for PVP ranged attacks.\nMinimum=0.00 Maximum=500.00 Default=50.00
+    /// Damage multiplier for PVP ranged attacks.\nMinimum=0.00 Maximum=500.00
+    /// Default=50.00
     #[serde(with = "crate::serde::f32")]
     #[serde(rename = "PVPFirearmDamageModifier")]
     pvp_firearm_damage_modifier: f32 = 50.0

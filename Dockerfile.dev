@@ -1,0 +1,36 @@
+FROM rust:1.69-buster as builder
+
+ENV RUST_BACKTRACE=full \
+    USERNAME=spiffodev \
+    STEAMCMD_PATH=/steamcmd \
+    PATH=$PATH:/steamcmd
+
+# Grab scripts
+COPY .scripts/*sh /tmp/scripts/
+
+# Set up dependencies
+RUN rustup component add clippy \
+    && rustup default nightly \
+    && rustup component add rustfmt --toolchain nightly \
+    && rustup default 1.69.0 \
+    && apt update \
+    && apt install -y --no-install-recommends software-properties-common \
+    && apt-get update \
+    && apt-get install -y lib32gcc1 curl bash \
+    && apt-get clean -y \
+    && mkdir $STEAMCMD_PATH \
+    && cd $STEAMCMD_PATH \
+    && curl -sqL 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz' | tar zxvf - \
+    && /bin/bash /tmp/scripts/setup.sh "${USERNAME}" "${USER_UID}" "${USER_GID}" \
+    && apt autoremove -y \
+    && apt clean -y \
+    && rm -rf /var/bin/apt/lists/* /tmp/scripts
+
+USER $USERNAME
+
+COPY do_steamcmd_stuff.sh $STEAMCMD_PATH
+COPY zomboid.config $STEAMCMD_PATH
+
+CMD ["/bin/bash"]
+
+

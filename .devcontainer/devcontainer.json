@@ -16,6 +16,7 @@
     "customizations": {
         "vscode": {
             "settings": {
+                "rust-analyzer.rustfmt.extraArgs": ["+nightly"],
                 "editor": {
                     "defaultFormatter": "rust-lang.rust-analyzer",
                     "formatOnSave": true,
